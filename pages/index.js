@@ -12,7 +12,19 @@ export default function Home() {
   const [isReady, setIsReady] = useState(false);
   const [isRunning, setIsRunning] = useState(false);
   // Elements in the array is an object with 2 fields: value and isChose. value is the numeric value of the element, isChosen signifies whether value isChosen.
-  const sortFunction = insertionSort;
+  var sortFunction;
+  switch (sortType) {
+    case "Bubble":
+      sortFunction = bubbleSort;
+      break;
+    case "Insertion":
+      sortFunction = insertionSort;
+      break;
+    default:
+      sortFunction = bubbleSort;
+      break;
+  }
+  
   const setInputToggleReady = function(newArray) {
     if (isReady) {
       setIsReady(false);
