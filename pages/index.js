@@ -3,7 +3,7 @@ import Image from 'next/image';
 import styles from '../styles/Home.module.css';
 import Header from '../components/header';
 import SortWindow from '../components/sortWindow';
-import { bubbleSort } from '../public/algorithms'
+import { bubbleSort, insertionSort } from '../public/algorithms'
 import { useState, useEffect } from 'react';
 
 export default function Home() {
@@ -12,7 +12,7 @@ export default function Home() {
   const [isReady, setIsReady] = useState(false);
   const [isRunning, setIsRunning] = useState(false);
   // Elements in the array is an object with 2 fields: value and isChose. value is the numeric value of the element, isChosen signifies whether value isChosen.
-  const sortFunction = bubbleSort; // will change as we implement more
+  const sortFunction = insertionSort;
   const setInputToggleReady = function(newArray) {
     if (isReady) {
       setIsReady(false);
@@ -36,9 +36,7 @@ export default function Home() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <Header setSortType={setSortType} setInputArray={setInputToggleReady} setRunning={setIsRunning} inputArray={inputArray} />
-      <h1>State Update!</h1>
-      <h3>Sorting type picked: {sortType}</h3>
-      {isReady ? <SortWindow sortMethod={sortFunction} elementArray={inputArray} setArray={setInputArray} isRunning={isRunning} /> : <div></div>}
+      {isReady ? <SortWindow sortMethodName={sortType} sortMethodFunction={sortFunction} elementArray={inputArray} setArray={setInputArray} isRunning={isRunning} /> : <div></div>}
     </div>
   ) 
 }
