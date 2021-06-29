@@ -107,6 +107,67 @@ function insertionSort(array, setArray) {
 	}, delay);
 }
 
+function selectionSort(array, setArray) {
+	const [iterationNum, setIterationNum] = useState(0);
+	const [findIndex, setFindIndex] = useState(0);
+	const [minIndex, setMinIndex] = useState(0);
+	const [isSearching, setIsSearching] = useState(true); // start with searching for min element
+	const [isMoved, setIsMoved] = useState(false);
+	const [delay, setDelay] = useState(defaultDelay);
+
+	useInterval(() => {
+		console.log("Iteration: " + iterationNum + ", findIndex: " + findIndex + ", isSearching: " + isSearching + ", isMoved: " + isMoved + ", delay: " + delay);
+		let tempArr = array;
+		if (isSearching) {
+			console.log("Searching for smallest element!");
+			let tempFind = findIndex;
+			if (!(iterationNum === 0 && tempFind === 0)) {
+				tempArr[tempFind - 1].isChosen = false;
+			}
+			tempArr[tempFind].isChosen = true;
+
+			// Find the smallest element
+			if (tempArr[tempFind].value < tempArr[minIndex].value) {
+				setMinIndex(tempFind);
+			}
+
+			// If already at the end
+			if (tempFind === tempArr.length - 1) {
+				// should not be continued after this
+				console.log("Searching done. Index of min number: " + minIndex + " value: " + tempArr[minIndex].value);
+				setIsSearching(false);
+			} else {
+				setFindIndex(tempFind + 1);
+			}
+		} else if (!isMoved) {
+			// found the smallest number but have not moved it
+			tempArr[tempArr.length - 1].isChosen = false;
+			tempArr[minIndex].isChosen = true;
+			setIsMoved(true);
+		} else {
+			// found the smallest number and have moved it
+			let temp = tempArr[minIndex];
+			tempArr[minIndex] = tempArr[iterationNum];
+			tempArr[iterationNum] = temp;
+
+			// check end condition
+			if (iterationNum === tempArr.length - 2) {
+				console.log("Searching has ended");
+				tempArr[tempArr.length - 2].isChosen = false;
+				setDelay(null);
+			} else {
+				// reset the loop
+				let i = iterationNum;
+				setIterationNum(i + 1);
+				setIsSearching(true);
+				setIsMoved(false);
+				setFindIndex(i + 1);
+				setMinIndex(i + 1);
+			}			
+		}
+	}, delay);
+}
+
 // for using interval with React Hook
 // Credit: https://overreacted.io/making-setinterval-declarative-with-react-hooks/
 function useInterval(callback, delay) {
@@ -127,4 +188,4 @@ function useInterval(callback, delay) {
   }, [delay]);
 }
 
-export { bubbleSort, insertionSort };
+export { bubbleSort, insertionSort, selectionSort };

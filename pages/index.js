@@ -3,7 +3,7 @@ import Image from 'next/image';
 import styles from '../styles/Home.module.css';
 import Header from '../components/header';
 import SortWindow from '../components/sortWindow';
-import { bubbleSort, insertionSort } from '../public/algorithms'
+import { bubbleSort, insertionSort, selectionSort } from '../public/algorithms'
 import { useState, useEffect } from 'react';
 
 export default function Home() {
@@ -19,6 +19,9 @@ export default function Home() {
       break;
     case "Insertion":
       sortFunction = insertionSort;
+      break;
+    case "Selection":
+      sortFunction = selectionSort;
       break;
     default:
       sortFunction = bubbleSort;
