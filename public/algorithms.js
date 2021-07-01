@@ -9,22 +9,24 @@ function bubbleSort(array, setArray) {
 	const [index, setIndex] = useState(0);
 	const [delay, setDelay] = useState(defaultDelay);
 	const [sorted, setSorted] = useState(true);
+	const [iterationNum, setIterationNum] = useState(0);
 
 	console.log("Bubble sort starts");
 	
 	useInterval(() => {
-		console.log("index: " + index + ", delay: " + delay + ", sorted: " + sorted);
+		console.log("Iteration num: " + iterationNum + ", index: " + index + ", delay: " + delay + ", sorted: " + sorted);
 		let tempArr = array;
+		let rightLimit = tempArr.length - 1 - iterationNum;
 
 		// Unchoose previous 2
 		if (index > 0) {
 			console.log("Unchoosing the previous 2");
 			tempArr[index - 1].isChosen = false;
 			tempArr[index].isChosen = false;
-		} else {
+		} else if (iterationNum > 0) {
 			console.log("Unchoosing the last 2");
-			tempArr[tempArr.length - 1].isChosen = false;
-			tempArr[tempArr.length - 2].isChosen = false;
+			tempArr[rightLimit + 1].isChosen = false; // new right limit is lower than previous right limit
+			tempArr[rightLimit].isChosen = false;
 		}
 		
 		// Choose 2 elements
@@ -45,14 +47,15 @@ function bubbleSort(array, setArray) {
 		let tempIndex = index + 1;
 
 		// Consider ending condition
-		if (tempIndex === array.length - 1) {
+		if (tempIndex === rightLimit) {
 			console.log("Reached the end of array")
+			setIterationNum(iterationNum + 1);
 			// if confirm sorted, set delay to null
 			if (sorted) {
 				console.log("All sorted. Exit now");
 				console.log("Unchoosing the last 2");
-				tempArr[tempArr.length - 1].isChosen = false;
-				tempArr[tempArr.length - 2].isChosen = false;
+				tempArr[rightLimit].isChosen = false;
+				tempArr[rightLimit - 1].isChosen = false;
 				setArray(tempArr);
 				setDelay(null);
 			} else {
@@ -65,7 +68,6 @@ function bubbleSort(array, setArray) {
 		}
 
 		setArray(tempArr);
-
 	}, delay)
 }
 
@@ -104,6 +106,7 @@ function insertionSort(array, setArray) {
 		}
 		
 		setArray(tempArr);
+		setIterationNum(iterationNum + 1);
 	}, delay);
 }
 
