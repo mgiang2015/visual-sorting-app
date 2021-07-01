@@ -168,6 +168,144 @@ function selectionSort(array, setArray) {
 	}, delay);
 }
 
+// Idea: Implement this using a stack, which represents the recursive calls of regular language mergeSort.
+// Each stack contains low index and high index. 
+// Once low === high (base case), we pop them off the stack and start the "merge" operation. After merging, each can then be merged together.
+// When we start to merge, let's have the following colors: highArr,lowArr and sorted. But we'll need to see how that pans out later LMAO.
+// For now let's just choose the entire block
+function mergeSort(array, setArray) {
+	const [delay, setDelay] = useState(defaultDelay);
+	const [stack, setStack] = useState([{low: 0, high: array.length - 1}]);
+
+	const pushElem = function(arr, setFunc, elem) {
+		let ta = arr;
+		ta.push(elem);
+		setFunc(ta);
+	}
+
+	const popElem = function(arr, setFunc) {
+		let ta = arr;
+		let t = ta.pop();
+		setFunc(ta);
+		return t;
+	}
+
+	const [merging, setMerging] = useState(false);
+	const [processing, setProcessing] = useState(true);
+	const [currLow, setCurrLow] = useState(0);
+	const [currHigh, setCurrHigh] = useState(0);
+	const [sortedIndex, setSortedIndex] = useState(0);
+
+	// indices for merging
+	const [lowIndex, setLowIndex] = useState(0);
+	const [highIndex, setHighIndex] = useState(0);
+
+	// auxiliary arrays for merging
+	const [lowArr, setLowArr] = useState([]);
+	const [highArr, setHighArr] = useState([]);
+
+	useInterval(() => {
+		let tempArr = array;
+
+		if (processing) {
+			populateStack(0, tempArr.length - 1);
+			setProcessing(false);
+		} else if (!merging && stack.length === 0) {
+			console.log("No more stack to play with!");
+			// Unchoose the previous BLOCKS
+			for (let i = 0; i < tempArr.length; i++) {
+				tempArr[i].isChosen = false;
+			}
+			setDelay(null);
+		} else if (!merging) { // set parameters for mering
+			let arrInfo = popElem(stack, setStack);
+			let low = arrInfo.low;
+			let high = arrInfo.high;
+			let middle = Math.floor((low + high) / 2);
+
+			console.log("Merging from " + low + " to " + high);
+
+			// Unchoose the previous BLOCKS
+			for (let i = currLow; i <= currHigh; i++) {
+				tempArr[i].isChosen = false;
+			}
+
+			for (let i = low; i <= high; i++) {
+				tempArr[i].isChosen = true;
+			}
+
+			setArray(tempArr);
+
+			setCurrLow(low);
+			setLowIndex(0);
+			setSortedIndex(low);
+			setCurrHigh(high);
+			setHighIndex(0); // merging starts from middle + 1 for array with higher index
+			setMerging(true);
+
+			setLowArr([]);
+			setHighArr([]);
+
+			setStack(stack);
+		} else {
+			if (sortedIndex > currHigh) {
+				setMerging(false);
+			} else {
+				if (lowArr.length === 0 && highArr.length === 0) {
+					// copy array into auxiliary arrays
+					let middle = Math.floor((currHigh + currLow) / 2);
+					for (let i = currLow; i <= middle; i++) {
+						pushElem(lowArr, setLowArr, tempArr[i]);
+					}
+
+					for (let i = middle + 1; i <= currHigh; i++) {
+						pushElem(highArr, setHighArr, tempArr[i]);
+					}
+				}
+				
+				// auxiliary array populated. Compare between lowIndex and highIndex
+				if (lowIndex === lowArr.length) {
+					tempArr[sortedIndex] = highArr[highIndex];
+					setHighIndex(highIndex + 1);
+					setSortedIndex(sortedIndex + 1);
+				} else if (highIndex === highArr.length) {
+					tempArr[sortedIndex] = lowArr[lowIndex];
+					setLowIndex(lowIndex + 1);
+					setSortedIndex(sortedIndex + 1);
+				} else if (lowArr[lowIndex].value <= highArr[highIndex].value) {
+					tempArr[sortedIndex] = lowArr[lowIndex];
+					setLowIndex(lowIndex + 1);
+					setSortedIndex(sortedIndex + 1);
+				} else if (lowArr[lowIndex].value > highArr[highIndex].value) {
+					tempArr[sortedIndex] = highArr[highIndex];
+					setHighIndex(highIndex + 1);
+					setSortedIndex(sortedIndex + 1);
+				}
+				setArray(tempArr);
+			}
+		}
+	}, delay);
+
+	function populateStack(low, high) {
+		if (low < high) {
+			let middle = Math.floor((high + low) / 2);
+			if (middle + 1 !== high) {
+				pushElem(stack, setStack, {low: middle + 1, high: high}); // sort the later part after
+				console.log("Added: " + (middle + 1) + " - " + high);
+			}
+			populateStack(middle + 1, high);
+
+			if (middle !== low) {
+				pushElem(stack, setStack, {low: low, high: middle});
+				console.log("Added: " + low + " - " + middle);
+			}
+			populateStack(low, middle);
+		}
+	}
+}
+
+
+
 // for using interval with React Hook
 // Credit: https://overreacted.io/making-setinterval-declarative-with-react-hooks/
 function useInterval(callback, delay) {
@@ -188,4 +326,4 @@ function useInterval(callback, delay) {
   }, [delay]);
 }
 
-export { bubbleSort, insertionSort, selectionSort };
+export { bubbleSort, insertionSort, selectionSort, mergeSort };
