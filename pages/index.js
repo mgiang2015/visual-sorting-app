@@ -30,6 +30,12 @@ export default function Home() {
       sortFunction = bubbleSort;
       break;
   }
+
+  var displayStr = "[ ";
+  for (let i = 0; i < inputArray.length; i++) {
+    displayStr += inputArray[i].value + " ";
+  }
+  displayStr += "]";
   
   const setInputToggleReady = function(newArray) {
     if (isReady) {
@@ -54,6 +60,7 @@ export default function Home() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <Header setSortType={setSortType} setInputArray={setInputToggleReady} setRunning={setIsRunning} inputArray={inputArray} />
+      <p>{displayStr}</p>
       {isReady ? <SortWindow sortMethodName={sortType} sortMethodFunction={sortFunction} elementArray={inputArray} setArray={setInputArray} isRunning={isRunning} /> : <div></div>}
     </div>
   ) 

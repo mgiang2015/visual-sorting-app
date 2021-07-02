@@ -56,7 +56,6 @@ function bubbleSort(array, setArray) {
 				console.log("Unchoosing the last 2");
 				tempArr[rightLimit].isChosen = false;
 				tempArr[rightLimit - 1].isChosen = false;
-				setArray(tempArr);
 				setDelay(null);
 			} else {
 				console.log("Not sorted yet. Resetting!");
@@ -66,8 +65,6 @@ function bubbleSort(array, setArray) {
 		} else {
 			setIndex(tempIndex);
 		}
-
-		setArray(tempArr);
 	}, delay)
 }
 
@@ -96,7 +93,6 @@ function insertionSort(array, setArray) {
 				setIterator(cache + 1);
 				setCache(cache + 1);
 			}
-			setArray(tempArr);
 		} else {
 			console.log("Wrong order. Swapping this down");
 			let temp = tempArr[iterator];
@@ -104,9 +100,6 @@ function insertionSort(array, setArray) {
 			tempArr[iterator - 1] = temp;
 			setIterator(iterator - 1);
 		}
-		
-		setArray(tempArr);
-		setIterationNum(iterationNum + 1);
 	}, delay);
 }
 
@@ -237,8 +230,6 @@ function mergeSort(array, setArray) {
 				tempArr[i].isChosen = true;
 			}
 
-			setArray(tempArr);
-
 			setCurrLow(low);
 			setLowIndex(0);
 			setSortedIndex(low);
@@ -284,7 +275,6 @@ function mergeSort(array, setArray) {
 					setHighIndex(highIndex + 1);
 					setSortedIndex(sortedIndex + 1);
 				}
-				setArray(tempArr);
 			}
 		}
 	}, delay);
