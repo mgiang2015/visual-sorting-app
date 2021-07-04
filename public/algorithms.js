@@ -3,7 +3,38 @@ import { useState, useEffect, useRef } from 'react';
 // each element in array has 2 fields: value and isChosen
 // takes in an array, and a function that sets the array
 
-const defaultDelay = 100;
+const defaultDelay = 1000;
+
+function coroutine(f) {
+    var o = f(); // instantiate the coroutine
+    o.next(); // execute until the first yield
+    return function(x) {
+        o.next(x);
+    }
+}
+
+function coroutineTest(array, setArray) {
+	// just chooses and unchoose each bar in the array
+	const [index, setIndex] = useState(0);
+	const [delay, setDelay] = useState(defaultDelay);
+	let tempArr = array;
+	var loop = coroutine(function*() {
+		let i = yield;
+		console.log("Loop called. i = " + i);
+		if (i > 0) {
+			tempArr[i - 1].isChosen = false;
+		} else {
+			tempArr[tempArr.length - 1].isChosen = false;
+		}
+
+		tempArr[i].isChosen = true;
+	});
+
+	useInterval(() => {
+		loop(index);
+		setIndex(index === tempArr.length - 1 ? 0 : index + 1);
+	}, delay);
+}
 
 function bubbleSort(array, setArray) {
 	const [index, setIndex] = useState(0);
@@ -319,4 +350,4 @@ function useInterval(callback, delay) {
   }, [delay]);
 }
 
-export { bubbleSort, insertionSort, selectionSort, mergeSort };
+export { bubbleSort, insertionSort, selectionSort, mergeSort, coroutineTest };

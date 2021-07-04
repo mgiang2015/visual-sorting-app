@@ -3,11 +3,11 @@ import Image from 'next/image';
 import styles from '../styles/Home.module.css';
 import Header from '../components/header';
 import SortWindow from '../components/sortWindow';
-import { bubbleSort, insertionSort, selectionSort, mergeSort } from '../public/algorithms'
+import { bubbleSort, insertionSort, selectionSort, mergeSort, coroutineTest } from '../public/algorithms'
 import { useState, useEffect } from 'react';
 
 export default function Home() {
-  const [sortType, setSortType] = useState("Bubble"); // Default bubble sort
+  const [sortType, setSortType] = useState("");
   const [inputArray, setInputArray] = useState([]);
   const [isReady, setIsReady] = useState(false);
   const [isRunning, setIsRunning] = useState(false);
@@ -27,7 +27,7 @@ export default function Home() {
       sortFunction = mergeSort;
       break;
     default:
-      sortFunction = bubbleSort;
+      sortFunction = coroutineTest;
       break;
   }
 
