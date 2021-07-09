@@ -3,7 +3,7 @@ import { useState, useEffect, useRef } from 'react';
 // each element in array has 2 fields: value and isChosen
 // takes in an array, and a function that sets the array
 
-const defaultDelay = 1000;
+const defaultDelay = 100;
 
 function coroutine(f) {
     var o = f(); // instantiate the coroutine
@@ -15,25 +15,42 @@ function coroutine(f) {
 
 function coroutineTest(array, setArray) {
 	// just chooses and unchoose each bar in the array
+	const [start, setStart] = useState(0);
+	const [end, setEnd] = useState(0);
 	const [index, setIndex] = useState(0);
 	const [delay, setDelay] = useState(defaultDelay);
 	let tempArr = array;
+
 	var loop = coroutine(function*() {
-		let i = yield;
-		console.log("Loop called. i = " + i);
-		if (i > 0) {
-			tempArr[i - 1].isChosen = false;
+		let info = yield;
+		let localStart = info.start;
+		let localEnd = info.end;
+
+		// set the states
+		setStart(localStart);
+		setEnd(localEnd);
+
+		if (localStart >= localEnd) {
+			return;
 		} else {
-			tempArr[tempArr.length - 1].isChosen = false;
+			for (let i = localStart; i <= localEnd; i++) {
+				if (i > localStart) {
+					tempArr[i - 1].isChosen = false;
+				} else {
+					tempArr[end].isChosen = false; // unchoose the previous end
+				}
+				tempArr[i].isChosen = true;
+				yield;
+			}
+
+			let middle = (localStart +  localEnd);
+			loop({start: middle, end: localEnd});
+			loop({start: localStart, end: middle - 1});
 		}
 
-		tempArr[i].isChosen = true;
 	});
 
-	useInterval(() => {
-		loop(index);
-		setIndex(index === tempArr.length - 1 ? 0 : index + 1);
-	}, delay);
+	useInterval(loop(start, end), delay);
 }
 
 function bubbleSort(array, setArray) {
@@ -328,6 +345,126 @@ function mergeSort(array, setArray) {
 	}
 }
 
+function quickSort(array, setArray) {
+	const [delay, setDelay] = useState(defaultDelay);
+	const [stack, setStack] = useState([{start: 0, end: array.length - 1}]);
+	const [pivot, setPivot] = useState(0);
+	const [low, setLow] = useState(0);
+	const [high, setHigh] = useState(array.length - 1);
+
+	const [foundLow, setFoundLow] = useState(false);
+	const [isChoosingPivot, setChoosingPivot] = useState(true);
+	const [pivotSwapped, setPivotSwapped] = useState(false);
+	const [isSorting, setIsSorting] = useState(false);
+
+	useInterval(() => {
+		let tempArr = array;
+		let info = stack[stack.length - 1];
+
+		if (stack.length === 0) {
+			// TODO: Find out what to unchoose
+			setDelay(null);
+		} else if (isChoosingPivot) {
+			console.log("start = " + info.start + ", end = " + info.end);
+			if (info.start === info.end) {
+				setPivotSwapped(true);
+				setIsSorting(false);
+			} else {
+				let p = generatePivotIndex(info.start, info.end);
+				console.log("Choosing pivot and setting up. Pivot chosen at index: " + p);
+				setPivot(p);
+
+				// choose the pivot point
+				tempArr[p].isChosen = true;
+			}
+			
+			setChoosingPivot(false);
+		} else if (!pivotSwapped) {
+			// swap pivot to position start
+			let t = tempArr[info.start];
+			tempArr[info.start] = tempArr[pivot];
+			tempArr[pivot] = t;
+
+			// set up for sorting
+			setLow(info.end);
+			setHigh(info.end + 1); // the right most position that pivot will go to
+
+			setPivotSwapped(true);
+			setIsSorting(true);
+		} else if (isSorting) {
+			console.log("Sorting. low value = " + tempArr[low].value + ", pivot value = " + tempArr[info.start].value);
+			// implement the whole quick sort thing here
+			let tempLow = low;
+			let tempHigh = high;
+
+			if (tempLow < info.end) {
+				tempArr[tempLow + 1].isChosen = false;
+			}
+
+			if (tempHigh <= info.end && tempArr[tempHigh].isChosen) {
+				tempArr[tempHigh].isChosen = false;
+			}
+
+			tempArr[tempLow].isChosen = true;
+
+			if (tempLow === info.start) {
+				// right now, only tempLow is chosen. After swapping, tempArr[high - 1] is chosen
+				console.log("Sorting ended");
+				let t = tempArr[tempLow];
+				tempArr[tempLow] = tempArr[tempHigh - 1];
+				tempArr[tempHigh - 1] = t;
+				setHigh(tempHigh - 1);
+
+				setIsSorting(false);
+			} else if (!foundLow) {
+				if (tempArr[tempLow].value > tempArr[info.start].value) {
+					console.log("Found something larger: " + tempArr[tempLow].value);
+					setFoundLow(true);
+				} else {
+					// simply continue
+					console.log("Still finding low");
+					setLow(tempLow - 1);
+				}
+			} else {
+				console.log("Swapping!");
+				// time to swap
+				let t = tempArr[tempLow];
+				tempArr[tempLow] = tempArr[tempHigh - 1];
+				tempArr[tempHigh - 1] = t;
+
+				// reset
+				setFoundLow(false);
+				setHigh(tempHigh - 1);
+				setLow(tempLow - 1);
+			}
+		} else {
+			// Unchoose last attempt
+			tempArr[high].isChosen = false;
+
+			let tempStack = stack;
+			tempStack.pop();
+
+			if (info.start !== info.end) {
+				if (high < info.end) {
+					tempStack.push({start: high + 1, end: info.end});
+				}
+				if (high > info.start) {
+					tempStack.push({start: info.start, end: high - 1});
+				}
+			}
+
+			setStack(tempStack);
+			setChoosingPivot(true);
+			setPivotSwapped(false);
+			setIsSorting(false);
+		}
+	}, delay);
+
+	function generatePivotIndex(leftLimit, rightLimit) {
+		return Math.floor(Math.random() * (rightLimit - leftLimit + 1)) + leftLimit;
+	}
+}
+
 
 
 // for using interval with React Hook
@@ -350,4 +487,4 @@ function useInterval(callback, delay) {
   }, [delay]);
 }
 
-export { bubbleSort, insertionSort, selectionSort, mergeSort, coroutineTest };
+export { bubbleSort, insertionSort, selectionSort, mergeSort, quickSort, coroutineTest };

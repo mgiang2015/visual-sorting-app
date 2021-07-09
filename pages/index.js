@@ -3,7 +3,7 @@ import Image from 'next/image';
 import styles from '../styles/Home.module.css';
 import Header from '../components/header';
 import SortWindow from '../components/sortWindow';
-import { bubbleSort, insertionSort, selectionSort, mergeSort, coroutineTest } from '../public/algorithms'
+import { bubbleSort, insertionSort, selectionSort, mergeSort, quickSort} from '../public/algorithms'
 import { useState, useEffect } from 'react';
 
 export default function Home() {
@@ -26,8 +26,11 @@ export default function Home() {
     case "Merge":
       sortFunction = mergeSort;
       break;
+    case "Quick":
+      sortFunction = quickSort;
+      break;
     default:
-      sortFunction = coroutineTest;
+      sortFunction = bubbleSort;
       break;
   }
 
