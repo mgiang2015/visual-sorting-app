@@ -1,22 +1,38 @@
 import headerStyles from './header.module.css';
 import { useState } from 'react';
 
-export default function Header({ setSortType, setInputArray, setRunning, inputArray }) {
+export default function Header({ setSortTypes, setInputArray, setRunning, inputArray }) {
 	// TODO: Pass in a method that generates the content from the App. When run is pressed, Header should call the method
 	const sortingMethods = ["Bubble", "Insertion", "Selection", "Merge", "Quick"];
-	const [chosenMethod, setMethod] = useState("Bubble"); // problem: No way to know that the default is Bubble
+	const [chosenMethods, setMethods] = useState([]); // problem: No way to know that the default is Bubble
 	const [elementNum, setElementNum] = useState(0);
-	const handleRadioPick = function(e) {
-		console.log("Radio button picked: " + e.target.value);
-		setMethod(e.target.value);
+	// update the array of methods
+	const handleMethodPick = function(e) {
+		console.log("Method picked: " + e.target.value);
+		let t = chosenMethods;
+		/*
+		if (t.includes(e.target.value)) {
+			t.splice(t.indexOf(e.target.value), 1);
+		} else {
+			t.push(e.target.value);
+		}
+		*/
+		// let's limit the array at 1 for now
+		if (t.length === 1) {
+			t.pop();
+		}
+		t.push(e.target.value);
+		setMethods(t);
 	}
+
 	const handleElementChange = function(e) {
 		console.log("Element num changed to: " + e.target.value);
 		setElementNum(e.target.value);
 	}
+
 	const handleSetParamClick = function(e) {
-		console.log("SetParam clicked. Current elemNum: " + elementNum + ", chosenMethod: " + chosenMethod);
-		setSortType(chosenMethod);
+		console.log("SetParam clicked. Current elemNum: " + elementNum);
+		setSortTypes(chosenMethods);
 		setInputArray(generateInputArray(elementNum));
 	}
 
@@ -60,12 +76,9 @@ export default function Header({ setSortType, setInputArray, setRunning, inputAr
 				<label htmlFor="element_num">Number of elements</label>
 				<input id="element_num" type="number" placeholder="Enter an integer" onChange={handleElementChange}/>
 			</div>
-			<div className={headerStyles.sorting_options_container} onChange={handleRadioPick}>
+			<div className={headerStyles.sorting_options_container}>
 				{sortingMethods.map(method => (
-					<div className={headerStyles.sorting_option} key={method}>
-						<input type="radio" name="method" id={method} value={method} />
-						<label htmlFor={method}>{method + " sort"}</label>
-					</div>
+					<button className={headerStyles.sorting_option} value={method} key={method} onClick={handleMethodPick}>{method}</button>
 				))}
 			</div>
 			<button onClick={handleSetParamClick}>Set Parameters</button>
