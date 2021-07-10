@@ -138,6 +138,7 @@ function insertionSort(array, setArray) {
 			tempArr[tempIter].isChosen = false; // unchoose the previous chosen thingy first
 			// Check ending condition
 			let tempCache = cache;
+			tempArr[iterator].isSorted = true;
 			if (tempCache === tempArr.length - 1) {
 				console.log("Met the end of array");
 				setDelay(null);
@@ -200,10 +201,13 @@ function selectionSort(array, setArray) {
 			tempArr[minIndex] = tempArr[iterationNum];
 			tempArr[iterationNum] = temp;
 
+			tempArr[iterationNum].isSorted = true;
+
 			// check end condition
 			if (iterationNum === tempArr.length - 2) {
 				console.log("Searching has ended");
 				tempArr[tempArr.length - 2].isChosen = false;
+				tempArr[tempArr.length - 1].isSorted = true;
 				setDelay(null);
 			} else {
 				// reset the loop
@@ -278,6 +282,7 @@ function mergeSort(array, setArray) {
 			// Unchoose the previous BLOCKS
 			for (let i = currLow; i <= currHigh; i++) {
 				tempArr[i].isChosen = false;
+				tempArr[i].isSorted = true;
 			}
 
 			for (let i = low; i <= high; i++) {
@@ -373,6 +378,7 @@ function quickSort(array, setArray) {
 		} else if (isChoosingPivot) {
 			console.log("start = " + info.start + ", end = " + info.end);
 			if (info.start === info.end) {
+				tempArr[info.start].isSorted = true;
 				setPivotSwapped(true);
 				setIsSorting(false);
 			} else {
@@ -407,12 +413,6 @@ function quickSort(array, setArray) {
 				tempArr[tempLow + 1].isChosen = false;
 			}
 
-			/*
-			if (tempHigh <= info.end && tempArr[tempHigh].isChosen) {
-				tempArr[tempHigh].isChosen = false;
-			}
-			*/
-
 			tempArr[tempLow].isChosen = true;
 
 			if (tempLow === info.start) {
@@ -427,7 +427,7 @@ function quickSort(array, setArray) {
 				for (let i = 0; i <= info.end; i++) {
 					tempArr[i].isChosen = false;
 				}
-
+				tempArr[tempHigh - 1].isSorted = true;
 				setIsSorting(false);
 			} else if (!foundLow) {
 				if (tempArr[tempLow].value > tempArr[info.start].value) {
