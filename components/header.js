@@ -1,5 +1,7 @@
 import headerStyles from './header.module.css';
 import { useState, useEffect } from 'react';
+import Button from '@material-ui/core/Button'
+import ButtonGroup from '@material-ui/core/ButtonGroup'
 
 export default function Header({ sortTypes, setSortTypes, setInputArray, setRunning, inputArray }) {
 	// TODO: Pass in a method that generates the content from the App. When run is pressed, Header should call the method
@@ -18,8 +20,9 @@ export default function Header({ sortTypes, setSortTypes, setInputArray, setRunn
 		}
 		*/
 		// let's limit the array at 1 for now
+		let removedMethod = "";
 		if (t.length === 1) {
-			t.pop();
+			removedMethod = t.pop();
 		}
 		t.push(e.target.value);
 		setSortTypes(t);
@@ -77,9 +80,13 @@ export default function Header({ sortTypes, setSortTypes, setInputArray, setRunn
 				<input id="element_num" type="number" placeholder="Enter an integer" onChange={handleElementChange}/>
 			</div>
 			<div className={headerStyles.sorting_options_container}>
-				{sortingMethods.map(method => (
-					<button className={sortTypes.includes(method) ? headerStyles.sorting_option_chosen : headerStyles.sorting_option} value={method} key={method} onClick={handleMethodPick}>{method}</button>
-				))}
+				{sortingMethods.map((method) => 
+					(
+					<div key={method}>
+						<input name="type" type="radio" id={method} value={method} onClick={handleMethodPick} />
+						<label for={method}>{method + " Sort"}</label>
+					</div>
+					))}
 			</div>
 			<button onClick={handleSetParamClick}>Set Parameters</button>
 			<button onClick={handleRunClick}>Run!</button>
