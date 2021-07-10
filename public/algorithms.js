@@ -397,13 +397,15 @@ function quickSort(array, setArray) {
 			let tempLow = low;
 			let tempHigh = high;
 
-			if (tempLow < info.end) {
+			if ((tempLow < info.end) && ((tempLow + 1) != tempHigh)) {
 				tempArr[tempLow + 1].isChosen = false;
 			}
 
+			/*
 			if (tempHigh <= info.end && tempArr[tempHigh].isChosen) {
 				tempArr[tempHigh].isChosen = false;
 			}
+			*/
 
 			tempArr[tempLow].isChosen = true;
 
@@ -414,6 +416,11 @@ function quickSort(array, setArray) {
 				tempArr[tempLow] = tempArr[tempHigh - 1];
 				tempArr[tempHigh - 1] = t;
 				setHigh(tempHigh - 1);
+
+				// unchoose from (tempHigh - 1) to end
+				for (let i = 0; i <= info.end; i++) {
+					tempArr[i].isChosen = false;
+				}
 
 				setIsSorting(false);
 			} else if (!foundLow) {
