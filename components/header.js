@@ -1,15 +1,15 @@
 import headerStyles from './header.module.css';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
-export default function Header({ setSortTypes, setInputArray, setRunning, inputArray }) {
+export default function Header({ sortTypes, setSortTypes, setInputArray, setRunning, inputArray }) {
 	// TODO: Pass in a method that generates the content from the App. When run is pressed, Header should call the method
 	const sortingMethods = ["Bubble", "Insertion", "Selection", "Merge", "Quick"];
-	const [chosenMethods, setMethods] = useState([]); // problem: No way to know that the default is Bubble
 	const [elementNum, setElementNum] = useState(0);
+
 	// update the array of methods
 	const handleMethodPick = function(e) {
 		console.log("Method picked: " + e.target.value);
-		let t = chosenMethods;
+		let t = sortTypes;
 		/*
 		if (t.includes(e.target.value)) {
 			t.splice(t.indexOf(e.target.value), 1);
@@ -22,7 +22,7 @@ export default function Header({ setSortTypes, setInputArray, setRunning, inputA
 			t.pop();
 		}
 		t.push(e.target.value);
-		setMethods(t);
+		setSortTypes(t);
 	}
 
 	const handleElementChange = function(e) {
@@ -32,7 +32,6 @@ export default function Header({ setSortTypes, setInputArray, setRunning, inputA
 
 	const handleSetParamClick = function(e) {
 		console.log("SetParam clicked. Current elemNum: " + elementNum);
-		setSortTypes(chosenMethods);
 		setInputArray(generateInputArray(elementNum));
 	}
 
@@ -65,6 +64,7 @@ export default function Header({ setSortTypes, setInputArray, setRunning, inputA
 	    	isSorted: false,
 	    });
 	  }
+
 	  randArray = shuffle(randArray);
 
 	  return randArray;
@@ -78,7 +78,7 @@ export default function Header({ setSortTypes, setInputArray, setRunning, inputA
 			</div>
 			<div className={headerStyles.sorting_options_container}>
 				{sortingMethods.map(method => (
-					<button className={headerStyles.sorting_option} value={method} key={method} onClick={handleMethodPick}>{method}</button>
+					<button className={sortTypes.includes(method) ? headerStyles.sorting_option_chosen : headerStyles.sorting_option} value={method} key={method} onClick={handleMethodPick}>{method}</button>
 				))}
 			</div>
 			<button onClick={handleSetParamClick}>Set Parameters</button>

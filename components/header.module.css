@@ -22,3 +22,8 @@
 .sorting_option {
 	padding: 0.1em;
 }
+
+.sorting_option_chosen {
+	background-color: green;
+	padding: 0.1em;
+}

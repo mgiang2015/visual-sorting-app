@@ -64,6 +64,7 @@ function bubbleSort(array, setArray) {
 	useInterval(() => {
 		console.log("Iteration num: " + iterationNum + ", index: " + index + ", delay: " + delay + ", sorted: " + sorted);
 		let tempArr = array;
+		let tempSorted = sorted;
 		let rightLimit = tempArr.length - 1 - iterationNum;
 
 		// Unchoose previous 2
@@ -83,23 +84,25 @@ function bubbleSort(array, setArray) {
 		tempArr[index + 1].isChosen = true;
 
 		// Check if these elements are in order
-		console.log("Check order");
+		console.log("Check order " + tempArr[index].value + " and " + tempArr[index + 1].value);
 		if (tempArr[index].value > tempArr[index + 1].value) {
 			setSorted(false);
+			tempSorted = false;
 			// swap these 2 values
+			console.log("Swapping!");
 			let temp = tempArr[index];
 			tempArr[index] = tempArr[index + 1];
 			tempArr[index + 1] = temp;
 		}
 
 		let tempIndex = index + 1;
-
+		
 		// Consider ending condition
 		if (tempIndex === rightLimit) {
 			console.log("Reached the end of array")
 			setIterationNum(iterationNum + 1);
 			// if confirm sorted, set delay to null
-			if (sorted) {
+			if (tempSorted || (rightLimit - 1 === 0)) {
 				// set everything as sorted
 				for (let i = 0; i <= rightLimit; i++) {
 					tempArr[i].isSorted = true;
