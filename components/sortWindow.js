@@ -15,7 +15,7 @@ export default function SortWindow({ sortMethodName, sortMethodFunction, element
 		<div>
 			<h3>Algorithm: {sortMethodName + " sort"}</h3>
 			<div className={sortWindowStyles.sort_window_container}>
-				{elementArray.map(element => <div className={element.isChosen ? sortWindowStyles.sorting_stick_chosen : sortWindowStyles.sorting_stick} style={{ height: element.value * 10 }}/>)}
+				{elementArray.map(element => <div className={element.isChosen ? sortWindowStyles.sorting_stick_chosen : (element.isSorted ? sortWindowStyles.sorting_stick_sorted : sortWindowStyles.sorting_stick)} style={{ height: element.value * 10 }}/>)}
 			</div>
 		</div>
 	);

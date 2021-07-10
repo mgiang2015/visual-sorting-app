@@ -100,6 +100,10 @@ function bubbleSort(array, setArray) {
 			setIterationNum(iterationNum + 1);
 			// if confirm sorted, set delay to null
 			if (sorted) {
+				// set everything as sorted
+				for (let i = 0; i <= rightLimit; i++) {
+					tempArr[i].isSorted = true;
+				}
 				console.log("All sorted. Exit now");
 				console.log("Unchoosing the last 2");
 				tempArr[rightLimit].isChosen = false;
@@ -109,6 +113,8 @@ function bubbleSort(array, setArray) {
 				console.log("Not sorted yet. Resetting!");
 				setIndex(0);
 				setSorted(true);
+				// set last element as sorted
+				tempArr[rightLimit].isSorted = true;
 			}
 		} else {
 			setIndex(tempIndex);

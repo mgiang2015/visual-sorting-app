@@ -3,7 +3,7 @@ import { useState } from 'react';
 
 export default function Header({ setSortType, setInputArray, setRunning, inputArray }) {
 	// TODO: Pass in a method that generates the content from the App. When run is pressed, Header should call the method
-	const sortingMethods = ["Bubble", "Insertion", "Selection", "Merge", "Quick", "Heap"];
+	const sortingMethods = ["Bubble", "Insertion", "Selection", "Merge", "Quick"];
 	const [chosenMethod, setMethod] = useState("Bubble"); // problem: No way to know that the default is Bubble
 	const [elementNum, setElementNum] = useState(0);
 	const handleRadioPick = function(e) {
@@ -45,7 +45,8 @@ export default function Header({ setSortType, setInputArray, setRunning, inputAr
 	  for (let i = 1; i <= num; i++) {
 	    randArray.push({
 	    	value: i,
-	    	isChosen: false
+	    	isChosen: false,
+	    	isSorted: false,
 	    });
 	  }
 	  randArray = shuffle(randArray);

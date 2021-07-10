@@ -18,3 +18,9 @@
 	border: 1px solid black;
 	width: 10px;
 }
+
+.sorting_stick_sorted {
+	background-color: green;
+	border: 1px solid black;
+	width: 10px;
+}
