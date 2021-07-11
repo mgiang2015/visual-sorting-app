@@ -1,7 +1,5 @@
 import headerStyles from './header.module.css';
 import { useState, useEffect } from 'react';
-import Button from '@material-ui/core/Button'
-import ButtonGroup from '@material-ui/core/ButtonGroup'
 
 export default function Header({ sortTypes, setSortTypes, setInputArray, setRunning }) {
 	// TODO: Pass in a method that generates the content from the App. When run is pressed, Header should call the method

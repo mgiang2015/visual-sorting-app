@@ -7,8 +7,6 @@ import sortWindowStyles from './sortWindow.module.css';
 import { useState, useEffect, useRef } from 'react';
 
 export default function SortWindow({ sortMethodName, sortMethodFunction, elementArray, setArray, isRunning }) {
-
-
 	if (isRunning) {
 		const [localArr, setLocalArr] = useState(elementArray);
 		const [time, setTime] = useState(0.0);
