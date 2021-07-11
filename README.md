@@ -3,7 +3,7 @@ This is a web application that visualises 5 popular sorting techniques: Bubble S
 
 ## Website
 
-Link to the deployed website will be included here.
+This app is deployed on Vercel. Head over to [Visual Sorting App](https://visual-sorting-app.vercel.app) to test the app out!
 
 ## Existing Features
 - Automaticly generates input array (for now, it's n distinct numbers from 1 to n).
