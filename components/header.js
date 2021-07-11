@@ -3,7 +3,7 @@ import { useState, useEffect } from 'react';
 import Button from '@material-ui/core/Button'
 import ButtonGroup from '@material-ui/core/ButtonGroup'
 
-export default function Header({ sortTypes, setSortTypes, setInputArray, setRunning, inputArray }) {
+export default function Header({ sortTypes, setSortTypes, setInputArray, setRunning }) {
 	// TODO: Pass in a method that generates the content from the App. When run is pressed, Header should call the method
 	const sortingMethods = ["Bubble", "Insertion", "Selection", "Merge", "Quick"];
 	const [elementNum, setElementNum] = useState(0);
@@ -12,19 +12,20 @@ export default function Header({ sortTypes, setSortTypes, setInputArray, setRunn
 	const handleMethodPick = function(e) {
 		console.log("Method picked: " + e.target.value);
 		let t = sortTypes;
-		/*
+		
 		if (t.includes(e.target.value)) {
 			t.splice(t.indexOf(e.target.value), 1);
 		} else {
 			t.push(e.target.value);
 		}
-		*/
+		/*
 		// let's limit the array at 1 for now
 		let removedMethod = "";
 		if (t.length === 1) {
 			removedMethod = t.pop();
 		}
 		t.push(e.target.value);
+		*/
 		setSortTypes(t);
 	}
 
@@ -83,7 +84,7 @@ export default function Header({ sortTypes, setSortTypes, setInputArray, setRunn
 				{sortingMethods.map((method) => 
 					(
 					<div key={method}>
-						<input name="type" type="radio" id={method} value={method} onClick={handleMethodPick} />
+						<input name="type" type="checkbox" id={method} value={method} onClick={handleMethodPick} />
 						<label for={method}>{method + " Sort"}</label>
 					</div>
 					))}
