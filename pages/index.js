@@ -116,7 +116,7 @@ export default function Home() {
       <p>{displaySortTypes}</p>
       {isReady 
         ? sortTypes.map((sortType) => 
-          <SortWindow sortMethodName={sortType} sortMethodFunction={getSortFunction(sortType)} elementArray={deepCopyArray(inputArray)} setArray={setInputArray} isRunning={isRunning} />
+          <SortWindow key={sortType} sortMethodName={sortType} sortMethodFunction={getSortFunction(sortType)} elementArray={deepCopyArray(inputArray)} setArray={setInputArray} isRunning={isRunning} />
           )
         : <div></div>}
     </div>

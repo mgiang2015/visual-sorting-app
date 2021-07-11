@@ -83,7 +83,7 @@ export default function Header({ sortTypes, setSortTypes, setInputArray, setRunn
 					(
 					<div key={method}>
 						<input name="type" type="checkbox" id={method} value={method} onClick={handleMethodPick} />
-						<label for={method}>{method + " Sort"}</label>
+						<label htmlFor={method}>{method + " Sort"}</label>
 					</div>
 					))}
 			</div>
