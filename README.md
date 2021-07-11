@@ -1,8 +1,30 @@
+# Visual Sorting App
+This is a web application that visualises 5 popular sorting techniques: Bubble Sort, Insertion Sort, Selection Sort, Merge Sort and Quick Sort. This is a project for me to learn development with ReactJS and NextJS framework.
+
+## Website
+
+Link to the deployed website will be included here.
+
+## Existing Features
+- Automaticly generates input array (for now, it's n distinct numbers from 1 to n).
+- Visually highlight which portion is sorted, which is being checked and which portion is still being processed.
+- Shows performance measures that one usually look for in a soring algorithm: time taken and number of writes. Time taken includes the animation in ReactJS, which results in a much larger timing than if you were to run it on your computer.
+- Allow more than 1 algorithm to run simultaneously, so that you can compare between algorithms.
+
+## Still in development
+- Custom input
+- Randomly generated input within a range (max, min)
+- Better UI experience
+
+## NextJS Documentation
+
 This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 
-## Getting Started
+### Getting Started
 
-First, run the development server:
+First, clone this repository and run `npm install` to install all dependencies.
+
+Then, run the development server:
 
 ```bash
 npm run dev
