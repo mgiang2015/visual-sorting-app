@@ -13,7 +13,7 @@ function coroutine(f) {
     }
 }
 
-function coroutineTest(array, setArray) {
+function coroutineTest(array, addTime) {
 	// just chooses and unchoose each bar in the array
 	const [start, setStart] = useState(0);
 	const [end, setEnd] = useState(0);
@@ -53,7 +53,7 @@ function coroutineTest(array, setArray) {
 	useInterval(loop(start, end), delay);
 }
 
-function bubbleSort(array, setArray) {
+function bubbleSort(array, addTime, incrementSwaps) {
 	const [index, setIndex] = useState(0);
 	const [delay, setDelay] = useState(defaultDelay);
 	const [sorted, setSorted] = useState(true);
@@ -93,6 +93,7 @@ function bubbleSort(array, setArray) {
 			let temp = tempArr[index];
 			tempArr[index] = tempArr[index + 1];
 			tempArr[index + 1] = temp;
+			incrementSwaps();
 		}
 
 		let tempIndex = index + 1;
@@ -122,10 +123,11 @@ function bubbleSort(array, setArray) {
 		} else {
 			setIndex(tempIndex);
 		}
+		addTime(delay);
 	}, delay)
 }
 
-function insertionSort(array, setArray) {
+function insertionSort(array, addTime, incrementSwaps) {
 	const [cache, setCache] = useState(0); // to save the furthest position that the sort has come to
 	const [iterator, setIterator] = useState(0); // cache will always be 1 position lower than iterator
 	const [delay, setDelay] = useState(defaultDelay);
@@ -156,12 +158,14 @@ function insertionSort(array, setArray) {
 			let temp = tempArr[iterator];
 			tempArr[iterator] = tempArr[iterator - 1];
 			tempArr[iterator - 1] = temp;
+			incrementSwaps();
 			setIterator(iterator - 1);
 		}
+		addTime(delay);
 	}, delay);
 }
 
-function selectionSort(array, setArray) {
+function selectionSort(array, addTime, incrementSwaps) {
 	const [iterationNum, setIterationNum] = useState(0);
 	const [findIndex, setFindIndex] = useState(0);
 	const [minIndex, setMinIndex] = useState(0);
@@ -203,6 +207,7 @@ function selectionSort(array, setArray) {
 			let temp = tempArr[minIndex];
 			tempArr[minIndex] = tempArr[iterationNum];
 			tempArr[iterationNum] = temp;
+			incrementSwaps();
 
 			tempArr[iterationNum].isSorted = true;
 
@@ -222,6 +227,7 @@ function selectionSort(array, setArray) {
 				setMinIndex(i + 1);
 			}			
 		}
+		addTime(delay);
 	}, delay);
 }
 
@@ -230,7 +236,7 @@ function selectionSort(array, setArray) {
 // Once low === high (base case), we pop them off the stack and start the "merge" operation. After merging, each can then be merged together.
 // When we start to merge, let's have the following colors: highArr,lowArr and sorted. But we'll need to see how that pans out later LMAO.
 // For now let's just choose the entire block
-function mergeSort(array, setArray) {
+function mergeSort(array, addTime, incrementSwaps) {
 	const [delay, setDelay] = useState(defaultDelay);
 	const [stack, setStack] = useState([{low: 0, high: array.length - 1}]);
 
@@ -318,27 +324,32 @@ function mergeSort(array, setArray) {
 						pushElem(highArr, setHighArr, tempArr[i]);
 					}
 				}
-				
+
 				// auxiliary array populated. Compare between lowIndex and highIndex
 				if (lowIndex === lowArr.length) {
 					tempArr[sortedIndex] = highArr[highIndex];
 					setHighIndex(highIndex + 1);
 					setSortedIndex(sortedIndex + 1);
+					incrementSwaps();
 				} else if (highIndex === highArr.length) {
 					tempArr[sortedIndex] = lowArr[lowIndex];
 					setLowIndex(lowIndex + 1);
 					setSortedIndex(sortedIndex + 1);
+					incrementSwaps();
 				} else if (lowArr[lowIndex].value <= highArr[highIndex].value) {
 					tempArr[sortedIndex] = lowArr[lowIndex];
 					setLowIndex(lowIndex + 1);
 					setSortedIndex(sortedIndex + 1);
+					incrementSwaps();
 				} else if (lowArr[lowIndex].value > highArr[highIndex].value) {
 					tempArr[sortedIndex] = highArr[highIndex];
 					setHighIndex(highIndex + 1);
 					setSortedIndex(sortedIndex + 1);
+					incrementSwaps();
 				}
 			}
 		}
+		addTime(delay);
 	}, delay);
 
 	function populateStack(low, high) {
@@ -359,7 +370,7 @@ function mergeSort(array, setArray) {
 	}
 }
 
-function quickSort(array, setArray) {
+function quickSort(array, addTime, incrementSwaps) {
 	const [delay, setDelay] = useState(defaultDelay);
 	const [stack, setStack] = useState([{start: 0, end: array.length - 1}]);
 	const [pivot, setPivot] = useState(0);
@@ -447,6 +458,7 @@ function quickSort(array, setArray) {
 				let t = tempArr[tempLow];
 				tempArr[tempLow] = tempArr[tempHigh - 1];
 				tempArr[tempHigh - 1] = t;
+				incrementSwaps();
 
 				// reset
 				setFoundLow(false);
@@ -474,6 +486,7 @@ function quickSort(array, setArray) {
 			setPivotSwapped(false);
 			setIsSorting(false);
 		}
+		addTime(delay);
 	}, delay);
 
 	function generatePivotIndex(leftLimit, rightLimit) {
