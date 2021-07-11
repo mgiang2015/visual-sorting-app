@@ -65,6 +65,10 @@ function bubbleSort(array, addTime, incrementSwaps, isRunning) {
 	useInterval(() => {
 		if (!isRunning) {
 			// ignore and let it run!?!!??
+		} else if (array.length === 1) {
+			// already sorted
+			array[0].isSorted = true;
+			setDelay(null);
 		} else {
 			console.log("Iteration num: " + iterationNum + ", index: " + index + ", delay: " + delay + ", sorted: " + sorted);
 			let tempArr = array;
@@ -184,7 +188,10 @@ function selectionSort(array, addTime, incrementSwaps, isRunning) {
 		if (isRunning) {
 			console.log("Iteration: " + iterationNum + ", findIndex: " + findIndex + ", isSearching: " + isSearching + ", isMoved: " + isMoved + ", delay: " + delay);
 			let tempArr = array;
-			if (isSearching) {
+			if (tempArr.length === 1) {
+				tempArr[0].isSorted = true;
+				setDelay(null);
+			} else if (isSearching) {
 				console.log("Searching for smallest element!");
 				let tempFind = findIndex;
 				if (!(iterationNum === 0 && tempFind === 0)) {
