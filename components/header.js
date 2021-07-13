@@ -62,6 +62,8 @@ export default function Header({ sortTypes, setSortTypes, setInputArray, isReady
   }
 
   const generateRandomizedArray = function(elemNum, elemMin, elemMax) {
+  	let intMin = parseInt(elemMin);
+  	let intMax = parseInt(elemMax);
   	let randArray = [];
   	const shuffle = function(array) { // the Fisher–Yates shuffle
 	    let m = array.length, t, i;
@@ -79,7 +81,7 @@ export default function Header({ sortTypes, setSortTypes, setInputArray, isReady
 
 	  for (let i = 0; i < elemNum; i++) {
 	  	// generate a random number in range max to min, both inclusive
-	    let nextRand = Math.floor(Math.random() * (elemMax - elemMin + 1) + elemMin);
+	    let nextRand = Math.floor(Math.random() * (intMax - intMin + 1)) + intMin;
 	    randArray.push({
 	    	value: nextRand,
 	    	isChosen: false,
