@@ -1,0 +1,15 @@
+.page_container {
+	padding: 0em 2em 0em 2em;
+}
+
+.info_box {
+	margin-bottom: 1em;
+	display: flex;
+	flex-direction: column;
+	align-items: flex-start;
+	justify-content: space-between;
+}
+
+.info_box p {
+	width: 100%;
+}

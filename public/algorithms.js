@@ -295,6 +295,7 @@ function mergeSort(array, addTime, incrementSwaps, isRunning) {
 				// Unchoose the previous BLOCKS
 				for (let i = 0; i < tempArr.length; i++) {
 					tempArr[i].isChosen = false;
+					tempArr[i].isSorted = true;
 				}
 				setDelay(null);
 			} else if (!merging) { // set parameters for mering
@@ -513,8 +514,6 @@ function quickSort(array, addTime, incrementSwaps, isRunning) {
 		return Math.floor(Math.random() * (rightLimit - leftLimit + 1)) + leftLimit;
 	}
 }
-
-
 
 // for using interval with React Hook
 // Credit: https://overreacted.io/making-setinterval-declarative-with-react-hooks/

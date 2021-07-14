@@ -1,7 +1,8 @@
 import headerStyles from './header.module.css';
 import { useState, useEffect } from 'react';
+import { InputLabel, Input, Typography, Button, Divider } from '@material-ui/core';
 
-export default function Header({ sortTypes, setSortTypes, setInputArray, isReady, setIsReady, setRunning }) {
+export default function Header({ sortTypes, setSortTypes, setInputArray, isReady, setIsReady, isRunning, setRunning }) {
 	// TODO: Pass in a method that generates the content from the App. When run is pressed, Header should call the method
 	const sortingMethods = ["Bubble", "Insertion", "Selection", "Merge", "Quick"];
 	const [inputType, setInputType] = useState("random"); // default random
@@ -11,7 +12,7 @@ export default function Header({ sortTypes, setSortTypes, setInputArray, isReady
 	const [customInput, setCustomInput] = useState("");
 
 	const handleInputTypeChange = function(e) {
-		console.log("Input type picked: " + e.target.value);
+		console.log("Input type picked: " + e.currentTarget.value);
 		if (isReady) {
 			setIsReady(false);
 		}
@@ -34,8 +35,8 @@ export default function Header({ sortTypes, setSortTypes, setInputArray, isReady
 	}
 
 	const handleElementChange = function(e) {
-		console.log("Element num changed to: " + e.target.value);
-		setElementNum(e.target.value);
+		console.log("Element num changed to: " + e.currentTarget.value);
+		setElementNum(e.currentTarget.value);
 	}
 
 	const handleSetParamClick = function(e) {
@@ -43,9 +44,19 @@ export default function Header({ sortTypes, setSortTypes, setInputArray, isReady
 		setInputArray(generateInputArray());
 	}
 
+	const handleResetClick = function(e) {
+		setRunning(false);
+		setIsReady(false);
+	}
+
   const handleRunClick = function(e) {
   	console.log("Run clicked. Let sorting begin!");
   	setRunning(true);
+  }
+
+  const handlePauseClick = function(e) {
+  	console.log("Pause!");
+  	setRunning(false);
   }
 
   const parseCustomInput = function(str) {
@@ -107,44 +118,64 @@ export default function Header({ sortTypes, setSortTypes, setInputArray, isReady
 		<div className={headerStyles.container}>
 			<div className={headerStyles.randomize_elements}>
 				<div>
-					<label htmlFor="input_random" className={headerStyles.radio_label}>Generate a random array</label>
-					<input id="input_random" type="radio" name="input_type" value="random" onClick={handleInputTypeChange}/>
+					<InputLabel htmlFor="input_random" className={headerStyles.radio_label}>Generate a random array</InputLabel>
+					<Input id="input_random" type="radio" name="input_type" value="random" onClick={handleInputTypeChange}/>
 				</div>
 				<div>
-					<label htmlFor="element_num">Number of elements</label>
-					<input id="element_num" type="number" onChange={handleElementChange}/>
+					<InputLabel htmlFor="element_num">Number of elements</InputLabel>
+					<Input id="element_num" type="number" onChange={handleElementChange}/>
 				</div>
 				<div>
-					<label htmlFor="min">Minimum value</label>
-					<input id="min" type="number" onChange={(e) => setMin(e.target.value)} />
+					<InputLabel htmlFor="min">Minimum value</InputLabel>
+					<Input id="min" type="number" onChange={(e) => setMin(e.currentTarget.value)} />
 				</div>
 				<div>
-					<label htmlFor="max">Maximum value</label>
-					<input id="max" type="number" onChange={(e) => setMax(e.target.value)} />
+					<InputLabel htmlFor="max">Maximum value</InputLabel>
+					<Input id="max" type="number" onChange={(e) => setMax(e.currentTarget.value)} />
 				</div>
 			</div>
 			<div className={headerStyles.custom_input}>
 				<div>
-					<label htmlFor="input_custom" className={headerStyles.radio_label}>Or give us your custom input</label>
-					<input id="input_custom" type="radio" name="input_type" value="custom" onClick={handleInputTypeChange} />
+					<InputLabel htmlFor="input_custom">Or give us your custom input</InputLabel>
+					<Input id="input_custom" type="radio" name="input_type" value="custom" onClick={handleInputTypeChange} />
 				</div>
 				<div>
-					<label htmlFor="custom">Custom input</label>
-					<input id="custom" type="text" onChange={(e) => setCustomInput(e.target.value)} />
+					<InputLabel htmlFor="custom">Custom input</InputLabel>
+					<Input id="custom" type="text" onChange={(e) => setCustomInput(e.currentTarget.value)} />
 				</div>
-				<p>Format: integers only, seperated by space character. Eg: 1 5 2 57 8</p>
+				<Typography>Format: integers only, seperated by space character. Eg: 1 5 2 57 8</Typography>
 			</div>
 			<div className={headerStyles.sorting_options_container}>
 				{sortingMethods.map((method) => 
 					(
 					<div key={method}>
-						<input name="type" type="checkbox" id={method} value={method} onClick={handleMethodPick} />
-						<label htmlFor={method}>{method + " Sort"}</label>
+						<Input name="type" type="checkbox" id={method} value={method} onClick={handleMethodPick} />
+						<InputLabel htmlFor={method}>{method + " Sort"}</InputLabel>
 					</div>
 					))}
 			</div>
-			<button onClick={handleSetParamClick}>Set Parameters</button>
-			<button onClick={handleRunClick}>Run!</button>
+			{!isReady 
+				? <Button variant='contained' color='primary' size='small' onClick={handleSetParamClick}>Set Parameters</Button>
+				: <Button variant='contained' color='primary' size='small' onClick={handleResetClick}>Stop and Reset</Button>
+			}
+
+			{!isReady
+				? <Button variant='contained' color='secondary' size='small' onClick={handleRunClick} disabled>Run!</Button>
+				: !isRunning 
+					? <Button variant='contained' color='secondary' size='small' onClick={handleRunClick}>Run!</Button>
+					: <Button variant='contained' color='secondary' size='small' onClick={handlePauseClick}>Pause!</Button>
+			}
+			
+			
 		</div>
 	)
 }
+
+
+
+
+
+
+
+
+

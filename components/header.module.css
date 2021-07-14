@@ -1,24 +1,29 @@
 .container {
-	padding: 0.5em 1em 0.5em 1em;
+	padding: 1em;
+	margin-bottom: 1em;
 	display: flex;
 	flex-direction: row;
 	justify-content: space-evenly;
 	align-items: flex-start;
+	font-size: smaller;
+	border: 1px solid black;
+	box-shadow: 1px 1px;
 }
 
 .randomize_elements div {
 	display: flex;
 	flex-direction: row;
-	justify-content: flex-end;
+	justify-content: space-between;
 }
 
-.randomize_elements div input[type=number] {
+.randomize_elements div label {
+	margin: 0em 1em 0em 0em;
+	display: flex;
+	align-items: center;
+}
+
+.randomize_elements div Input[type=number] {
 	width: 5em;
-	margin-left: 1em;
-}
-
-.randomize_elements div input[type=radio] {
-	margin-bottom: 1em;
 }
 
 .custom_input {
@@ -30,20 +35,22 @@
 .custom_input div {
 	display: flex;
 	flex-direction: row;
-	justify-content: flex-end;
+	justify-content: space-between;
+}
+
+.custom_input div label {
+	margin: 0em 1em 0em 0em;
+	display: flex;
+	align-items: center;
 }
 
 .custom_input div input[type=text] {
 	width: auto;
-	margin-left: 1em;
-}
-
-.custom_input div input[type=radio] {
-	margin-bottom: 1em;
 }
 
 .custom_input p {
 	width: 20vw;
+	margin-top: 1em;
 }
 
 .radio_label {
@@ -51,17 +58,11 @@
 }
 
 .sorting_options_container {
-	width: 30%;
 	display: grid;
-	grid-template-rows: repeat(2, auto);
-	grid-template-columns: repeat(3, auto);
+	grid-template-rows: repeat(3, auto);
+	grid-template-columns: repeat(2, auto);
 }
 
-.sorting_option {
-	padding: 0.1em;
-}
-
-.sorting_option_chosen {
-	background-color: green;
-	padding: 0.1em;
+.sorting_options_container div {
+	margin: 0.2em 0.2em 0em 0em;
 }

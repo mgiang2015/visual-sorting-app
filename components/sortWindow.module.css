@@ -1,3 +1,9 @@
+.main_container {
+	padding: 1em;
+	border: 1px solid black;
+	margin-bottom: 1em;
+}
+
 .sort_window_container {
 	height: auto;
 	width: 100%;
@@ -9,18 +15,15 @@
 
 .sorting_stick {
 	background-color: blue;
-	border: 1px solid black;
-	width: 10px;
+	border: 0.5px solid black;
 }
 
 .sorting_stick_chosen {
 	background-color: red;
-	border: 1px solid black;
-	width: 10px;
+	border: 0.5px solid black;
 }
 
 .sorting_stick_sorted {
 	background-color: green;
-	border: 1px solid black;
-	width: 10px;
+	border: 0.5px solid black;
 }
