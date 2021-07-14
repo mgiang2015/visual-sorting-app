@@ -212,11 +212,6 @@ function selectionSort(array, addTime, incrementSwaps, isRunning) {
 				} else {
 					setFindIndex(tempFind + 1);
 				}
-			} else if (!isMoved) {
-				// found the smallest number but have not moved it
-				tempArr[tempArr.length - 1].isChosen = false;
-				tempArr[minIndex].isChosen = true;
-				setIsMoved(true);
 			} else {
 				// found the smallest number and have moved it
 				let temp = tempArr[minIndex];
@@ -225,6 +220,7 @@ function selectionSort(array, addTime, incrementSwaps, isRunning) {
 				incrementSwaps();
 
 				tempArr[iterationNum].isSorted = true;
+				tempArr[tempArr.length - 1].isChosen = false;
 
 				// check end condition
 				if (iterationNum === tempArr.length - 2) {
@@ -237,7 +233,6 @@ function selectionSort(array, addTime, incrementSwaps, isRunning) {
 					let i = iterationNum;
 					setIterationNum(i + 1);
 					setIsSearching(true);
-					setIsMoved(false);
 					setFindIndex(i + 1);
 					setMinIndex(i + 1);
 				}			
