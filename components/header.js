@@ -140,7 +140,7 @@ export default function Header({ sortTypes, setSortTypes, setInputArray, isReady
 			</div>
 			<div className={headerStyles.custom_input}>
 				<div>
-					<Button onClick={handleInputTypeChange} color={inputType === "custom" ? "primary" : "default"} value="random" value="custom">Or give us your custom input</Button>
+					<Button onClick={handleInputTypeChange} color={inputType === "custom" ? "primary" : "default"} value="custom">Or give us your custom input</Button>
 				</div>
 				<div>
 					<InputLabel value="custom">Custom input</InputLabel>
