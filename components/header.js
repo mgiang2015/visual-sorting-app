@@ -5,6 +5,7 @@ import { InputLabel, Input, Typography, Button, Divider } from '@material-ui/cor
 export default function Header({ sortTypes, setSortTypes, setInputArray, isReady, setIsReady, isRunning, setRunning }) {
 	// TODO: Pass in a method that generates the content from the App. When run is pressed, Header should call the method
 	const sortingMethods = ["Bubble", "Insertion", "Selection", "Merge", "Quick"];
+	const [chosenMethods, setChosenMethods] = useState([...sortTypes]);
 	const [inputType, setInputType] = useState("random"); // default random
 	const [elementNum, setElementNum] = useState(0);
 	const [max, setMax] = useState(0);
@@ -17,21 +18,25 @@ export default function Header({ sortTypes, setSortTypes, setInputArray, isReady
 			setIsReady(false);
 		}
 
-		setInputType(e.target.value)
+		setInputType(e.currentTarget.value)
 	}
 
 	// update the array of methods
 	const handleMethodPick = function(e) {
-		console.log("Method picked: " + e.target.value);
-		let t = sortTypes;
-		
-		if (t.includes(e.target.value)) {
-			t.splice(t.indexOf(e.target.value), 1);
+		console.log("Method picked: " + e.currentTarget.value);
+
+		let t = [...sortTypes];
+
+		if (t.includes(e.currentTarget.value)) {
+			t.splice(t.indexOf(e.currentTarget.value), 1);
 		} else {
-			t.push(e.target.value);
+			t.push(e.currentTarget.value);
 		}
 
+		setChosenMethods(t);
 		setSortTypes(t);
+
+		console.log(chosenMethods);
 	}
 
 	const handleElementChange = function(e) {
@@ -118,8 +123,7 @@ export default function Header({ sortTypes, setSortTypes, setInputArray, isReady
 		<div className={headerStyles.container}>
 			<div className={headerStyles.randomize_elements}>
 				<div>
-					<InputLabel htmlFor="input_random" className={headerStyles.radio_label}>Generate a random array</InputLabel>
-					<Input id="input_random" type="radio" name="input_type" value="random" onClick={handleInputTypeChange}/>
+					<Button onClick={handleInputTypeChange} color={inputType === "random" ? "primary" : "default"} value="random">Generate a random array</Button>
 				</div>
 				<div>
 					<InputLabel htmlFor="element_num">Number of elements</InputLabel>
@@ -136,21 +140,19 @@ export default function Header({ sortTypes, setSortTypes, setInputArray, isReady
 			</div>
 			<div className={headerStyles.custom_input}>
 				<div>
-					<InputLabel htmlFor="input_custom">Or give us your custom input</InputLabel>
-					<Input id="input_custom" type="radio" name="input_type" value="custom" onClick={handleInputTypeChange} />
+					<Button onClick={handleInputTypeChange} color={inputType === "custom" ? "primary" : "default"} value="random" value="custom">Or give us your custom input</Button>
 				</div>
 				<div>
-					<InputLabel htmlFor="custom">Custom input</InputLabel>
+					<InputLabel value="custom">Custom input</InputLabel>
 					<Input id="custom" type="text" onChange={(e) => setCustomInput(e.currentTarget.value)} />
 				</div>
 				<Typography>Format: integers only, seperated by space character. Eg: 1 5 2 57 8</Typography>
 			</div>
 			<div className={headerStyles.sorting_options_container}>
-				{sortingMethods.map((method) => 
+				{sortingMethods.map((method, index) => 
 					(
 					<div key={method}>
-						<Input name="type" type="checkbox" id={method} value={method} onClick={handleMethodPick} />
-						<InputLabel htmlFor={method}>{method + " Sort"}</InputLabel>
+						<Button variant="text" color={chosenMethods.includes(method) ? "primary" : "default"} id={method} value={method} onClick={handleMethodPick}>{method + " Sort"}</Button>
 					</div>
 					))}
 			</div>

@@ -53,10 +53,6 @@
 	margin-top: 1em;
 }
 
-.radio_label {
-	color: darkslategray;
-}
-
 .sorting_options_container {
 	display: grid;
 	grid-template-rows: repeat(3, auto);
